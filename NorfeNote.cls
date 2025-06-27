@@ -6,7 +6,7 @@
 % This line specifies the required LaTeX format
 \NeedsTeXFormat{LaTeX2e}
 % This line specifies the name of the class file
-\ProvidesClass{NorfeNote}
+\ProvidesClass{NorfeNote}[2025/06/27 v2.0 Norfe custom note class]
 
 % Declare options for the class
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article,ctexbook}}
@@ -21,17 +21,24 @@
   \LoadClass[a4paper, 12pt, twoside]{ctexbook}
   \RequirePackage[left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm, twoside]{geometry}
 \else
-  \LoadClass[a4paper, 12pt, twoside]{article}
+  \LoadClass[a4paper, 12pt, twoside]{ctexart}  % 改为 ctexart
   \RequirePackage[left=1.5cm, right=6.5cm, top=2.5cm, bottom=2.5cm, twoside]{geometry}
 \fi
+
+% 设置中文字体与英文字体（Times + 宋体）
+\ctexset{
+    fontset = none
+}
+\setmainfont{Times New Roman}
+\setCJKmainfont{SimSun}
 
 \linespread{1.2}
 
 \RequirePackage{indentfirst}
 
 \RequirePackage{amsmath}
-\RequirePackage{fontspec}
-\RequirePackage{xeCJK}
+% \RequirePackage{fontspec}
+% \RequirePackage{xeCJK}
 \RequirePackage{lipsum}
 \RequirePackage{perpage}
 \RequirePackage{etoolbox}
@@ -47,7 +54,12 @@
 \RequirePackage{caption}
 \RequirePackage{setspace}
 \RequirePackage{fancyhdr} % 加载 fancyhdr 宏包
-\usepackage{xcolor}
+
+% 加粗宋体的定义：用黑体 SimHei 近似实现
+\setCJKfamilyfont{song}{SimSun}       % 定义宋体
+\setCJKfamilyfont{boldsong}{SimHei}   % 定义加粗宋体为黑体
+\newcommand{\song}[1]{{\CJKfamily{song}#1}}        % 正常宋体
+\newcommand{\boldsong}[1]{{\CJKfamily{boldsong}#1}} % 视觉加粗宋体
 
 % Suppress specific LaTeX warnings
 \RequirePackage{silence}
@@ -72,9 +84,9 @@
 \parindent=0pt
 \setlength{\parindent}{2em}
 
-% Set main and CJK fonts
-\setmainfont{Times New Roman}
-\setCJKmainfont{SimSun}
+% % Set main and CJK fonts
+% \setmainfont{Times New Roman}
+% \setCJKmainfont{SimSun}
 
 % Set marginpar width
 \geometry{marginparwidth=5cm}

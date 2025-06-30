@@ -26,11 +26,11 @@
 \fi
 
 % 设置中文字体与英文字体（Times + 宋体）
-\ctexset{
-    fontset = none
-}
-\setmainfont{Times New Roman}
-\setCJKmainfont{SimSun}
+% \ctexset{
+%     fontset = windowsnew  % 或 auto / fandol / mac / none，根据平台
+% }
+% \setmainfont{Times New Roman}
+% \setCJKmainfont{SimSun}
 
 \linespread{1.2}
 

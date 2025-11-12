@@ -33,8 +33,29 @@
     citecolor=black,
 }
 
+% ======== 颜色定义 ========
+\RequirePackage{xcolor}
+
+% 深红、深蓝、深绿、深紫、深黄、深青
+\definecolor{deepred}{HTML}{b7282e}
+\definecolor{deepblue}{HTML}{313772}
+\definecolor{deepgreen}{HTML}{376439}
+\definecolor{deeppurple}{HTML}{5d3a9b}
+\definecolor{deepyellow}{HTML}{d4a017}
+\definecolor{deepcyan}{HTML}{008b8b}
+
+% 快捷命令（可选）
+\newcommand{\dr}[1]{\textcolor{deepred}{#1}}
+\newcommand{\db}[1]{\textcolor{deepblue}{#1}}
+\newcommand{\dg}[1]{\textcolor{deepgreen}{#1}}
+\newcommand{\dpurp}[1]{\textcolor{deeppurple}{#1}}
+\newcommand{\dy}[1]{\textcolor{deepyellow}{#1}}
+\newcommand{\dc}[1]{\textcolor{deepcyan}{#1}}
+
+
 \linespread{1.5} 
 \parindent=0pt
 \setlength{\parindent}{2em}
 
 \endinput
+

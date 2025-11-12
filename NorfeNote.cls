@@ -6,7 +6,7 @@
 % This line specifies the required LaTeX format
 \NeedsTeXFormat{LaTeX2e}
 % This line specifies the name of the class file
-\ProvidesClass{NorfeNote}[2025/06/27 v2.0 Norfe custom note class]
+\ProvidesClass{NorfeNote}[2025/11/12 v2.1 Norfe custom note class]
 
 % Declare options for the class
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article,ctexbook}}
@@ -18,10 +18,10 @@
 
 % Load the appropriate class with specific options
 \if@isCtexBook
-  \LoadClass[a4paper, 12pt, twoside]{ctexbook}
+  \LoadClass[a4paper, 10pt, twoside]{ctexbook}
   \RequirePackage[left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm, twoside]{geometry}
 \else
-  \LoadClass[a4paper, 12pt, twoside]{ctexart}  % 改为 ctexart
+  \LoadClass[a4paper, 10pt, twoside]{ctexart}  % 改为 ctexart
   \RequirePackage[left=1.5cm, right=6.5cm, top=2.5cm, bottom=2.5cm, twoside]{geometry}
 \fi
 
@@ -55,6 +55,24 @@
 \RequirePackage{setspace}
 \RequirePackage{fancyhdr} % 加载 fancyhdr 宏包
 
+\RequirePackage{changepage}  % 提供 adjustwidth 环境
+
+% ======== 常用数学与算法宏包 ========
+\RequirePackage{amsmath, amssymb, bm, mathrsfs}  % 数学支持
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+
+% ======== 列表样式与格式 ========
+\RequirePackage{enumitem}
+\setlist[itemize]{itemsep=1pt, topsep=1pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate]{itemsep=1pt, topsep=1pt, parsep=0pt, partopsep=0pt}
+
+
+% 修改 \cite 命令为中括号上标引用
+\makeatletter
+\renewcommand\@cite[2]{\textsuperscript{[#1\if@tempswa , #2\fi]}}
+\makeatother
+
 % 加粗宋体的定义：用黑体 SimHei 近似实现
 \setCJKfamilyfont{song}{SimSun}       % 定义宋体
 \setCJKfamilyfont{boldsong}{SimHei}   % 定义加粗宋体为黑体
@@ -78,6 +96,25 @@
     linkcolor=black,
     citecolor=black,
 }
+
+% ======== 颜色定义 ========
+\RequirePackage{xcolor}
+
+% 深红、深蓝、深绿、深紫、深黄、深青
+\definecolor{deepred}{HTML}{b7282e}
+\definecolor{deepblue}{HTML}{313772}
+\definecolor{deepgreen}{HTML}{376439}
+\definecolor{deeppurple}{HTML}{5d3a9b}
+\definecolor{deepyellow}{HTML}{d4a017}
+\definecolor{deepcyan}{HTML}{008b8b}
+
+% 快捷命令（可选）
+\newcommand{\dr}[1]{\textcolor{deepred}{#1}}
+\newcommand{\db}[1]{\textcolor{deepblue}{#1}}
+\newcommand{\dg}[1]{\textcolor{deepgreen}{#1}}
+\newcommand{\dpurp}[1]{\textcolor{deeppurple}{#1}}
+\newcommand{\dy}[1]{\textcolor{deepyellow}{#1}}
+\newcommand{\dc}[1]{\textcolor{deepcyan}{#1}}
 
 
 % Set paragraph indentation and length
@@ -137,6 +174,8 @@
 \setcounter{page}{1}
 \pagenumbering{arabic}
 }
+
+
 
 % End the class definition
 \endinput

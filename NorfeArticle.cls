@@ -48,7 +48,7 @@
 \newcommand{\dr}[1]{\textcolor{deepred}{#1}}
 \newcommand{\db}[1]{\textcolor{deepblue}{#1}}
 \newcommand{\dg}[1]{\textcolor{deepgreen}{#1}}
-\newcommand{\dpurp}[1]{\textcolor{deeppurple}{#1}}
+\newcommand{\dp}[1]{\textcolor{deeppurple}{#1}}
 \newcommand{\dy}[1]{\textcolor{deepyellow}{#1}}
 \newcommand{\dc}[1]{\textcolor{deepcyan}{#1}}
 

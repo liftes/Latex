@@ -53,6 +53,28 @@
 \newcommand{\dc}[1]{\textcolor{deepcyan}{#1}}
 
 
+% ======== Foot Comment System (增强型脚注批注) ========
+
+% 独立脚注编号
+\newcounter{footcommentcounter}
+
+% 脚注编号格式改为普通阿拉伯数字
+\renewcommand{\thefootnote}{\arabic{footcommentcounter}}
+
+% 定义主命令：\footcomment{...}
+\newcommand{\footcomment}[1]{%
+    \stepcounter{footcommentcounter}%
+    \footnote{#1}%
+}
+
+% 定义简写命令：\footc{...}
+\newcommand{\footc}[1]{\footcomment{#1}}
+
+% 定义另一简写命令：\fc{...}
+\newcommand{\fc}[1]{\footcomment{#1}}
+
+
+
 \linespread{1.5} 
 \parindent=0pt
 \setlength{\parindent}{2em}

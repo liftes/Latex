@@ -135,6 +135,9 @@
     \stepcounter{sidecommentcounter}%
     \textsuperscript{\Roman{sidecommentcounter}}%
     \marginpar{\raggedright\footnotesize\textbf{\Roman{sidecommentcounter}:} #1}}
+% 简写命令：\sidec{文本}
+\newcommand{\sidec}[1]{\sidecomment{#1}}
+
 
 % Define a counter for foot comments
 \newcounter{footcommentcounter}
@@ -144,6 +147,10 @@
 \newcommand{\footcomment}[1]{%
     \stepcounter{footcommentcounter}%
     \footnote{#1}}
+% 简写命令：\footc{文本}
+\newcommand{\footc}[1]{\footcomment{#1}}
+% 最短命令：\fc{文本}
+\newcommand{\fc}[1]{\footcomment{#1}}
 
 % Patch the footnote format to include footnote mark
 \makeatletter

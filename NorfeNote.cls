@@ -25,12 +25,10 @@
   \RequirePackage[left=1.5cm, right=6.5cm, top=2.5cm, bottom=2.5cm, twoside]{geometry}
 \fi
 
-% 设置中文字体与英文字体（Times + 宋体）
-% \ctexset{
-%     fontset = windowsnew  % 或 auto / fandol / mac / none，根据平台
-% }
-% \setmainfont{Times New Roman}
-% \setCJKmainfont{SimSun}
+% 英文字体设置为 Times New Roman
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Courier New}
 
 \linespread{1.2}
 

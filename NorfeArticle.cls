@@ -8,6 +8,14 @@
 
 \LoadClass[10pt, a4paper, oneside, twocolumn, UTF8]{ctexart}
 
+% ======== 字体设置（XeLaTeX 专用） ========
+\RequirePackage{fontspec}
+
+% 英文字体设置为 Times New Roman
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
 \RequirePackage{amsmath, amsthm, amssymb, bm, graphicx, hyperref, mathrsfs, tikz}
 \RequirePackage{abstract}
 \RequirePackage{subfiles}

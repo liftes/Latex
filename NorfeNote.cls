@@ -92,7 +92,8 @@
 % If your system font name is different, you can change it here.
 \def\Norfe@SansMainEN{Arial}
 \def\Norfe@SansSansEN{Arial}
-\def\Norfe@SansMainCN{SourceHanSansCN-Normal.otf}
+% \def\Norfe@SansMainCN{SourceHanSansCN-Normal.otf}
+\def\Norfe@SansMainCN{Source Han Sans CN}
 
 % Apply selected text fonts
 \if@NorfeSansText
@@ -104,7 +105,8 @@
   % Chinese text
   % Use AutoFakeBold to avoid missing bold shapes if only Normal is present.
   \setCJKmainfont{\Norfe@SansMainCN}[
-    AutoFakeBold = 2.0,
+    BoldFont    = * Heavy,
+    % AutoFakeBold = 2.0,
     AutoFakeSlant = 0.15
   ]
 \else

@@ -105,7 +105,7 @@
   % Chinese text
   % Use AutoFakeBold to avoid missing bold shapes if only Normal is present.
   \setCJKmainfont{\Norfe@SansMainCN}[
-    BoldFont    = * Heavy,
+    BoldFont    = * Bold,
     % AutoFakeBold = 2.0,
     AutoFakeSlant = 0.15
   ]
@@ -165,6 +165,8 @@
 \RequirePackage{setspace}
 \RequirePackage{fancyhdr}
 \RequirePackage{changepage}
+
+\RequirePackage{chngcntr} % for 脚注编号
 
 % Algorithms
 \RequirePackage{algorithm}
@@ -246,6 +248,10 @@
 \makeatletter
 \patchcmd{\@makefntext}{\ifFN@hangfoot\else}{\ifFN@hangfoot\else\makebox[1em][l]{\textbf{\@thefnmark}:}\fi}{}{}
 \makeatother
+
+\counterwithin*{sidecommentcounter}{page}
+\counterwithin*{footcommentcounter}{page}
+
 
 % ------------------------------------------------------------
 % 12. Definition environment (same as old)

@@ -2,6 +2,17 @@
 \ProvidesClass{response}[2025/12/15 Reviewer Outline Class]
 
 % ------------------------------------------------
+% Language option
+% ------------------------------------------------
+\newif\ifresponse@chinese
+\response@chinesefalse
+
+\DeclareOption{ch}{\response@chinesetrue}
+\DeclareOption{en}{\response@chinesefalse}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessOptions\relax
+
+% ------------------------------------------------
 % Base class
 % ------------------------------------------------
 \LoadClass[10pt]{article}
@@ -33,6 +44,32 @@
 % Math (optional)
 % ------------------------------------------------
 \RequirePackage{amsmath,amssymb}
+
+% ------------------------------------------------
+% Caption format for response figures/tables
+% ------------------------------------------------
+\RequirePackage{caption}
+
+\renewcommand{\thefigure}{R\arabic{figure}}
+\renewcommand{\thetable}{R\arabic{table}}
+\renewcommand{\theequation}{R\arabic{equation}}
+
+\ifresponse@chinese
+  \captionsetup[figure]{name={图}}
+  \captionsetup[table]{name={表}}
+\else
+  \captionsetup[figure]{name={Fig.}}
+  \captionsetup[table]{name={Table}}
+\fi
+
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{center}%
+    {\LARGE \@title \par}%
+  \end{center}%
+  \vskip 1.5em%
+}
+\makeatother
 
 % ------------------------------------------------
 % Paragraph formatting

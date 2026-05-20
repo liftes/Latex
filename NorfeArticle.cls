@@ -71,7 +71,8 @@
 
 % ---- Sans-text fonts ----
 \def\Norfe@SansMainEN{Arial}
-\def\Norfe@SansMainCN{SourceHanSansCN-Normal.otf}
+% \def\Norfe@SansMainCN{SourceHanSansCN-Normal.otf}
+\def\Norfe@SansMainCN{Source Han Sans CN}
 
 \if@NorfeSansText
   % ===== Sans-serif text mode =====
@@ -80,7 +81,8 @@
   \setmonofont{\Norfe@MonoEN}
 
   \setCJKmainfont{\Norfe@SansMainCN}[
-    AutoFakeBold = 2.0,
+    BoldFont    = * Bold,
+    % AutoFakeBold = 2.0,
     AutoFakeSlant = 0.15
   ]
 \else

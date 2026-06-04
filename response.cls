@@ -53,6 +53,10 @@
 \RequirePackage{ifthen}
 \RequirePackage{fancyhdr}
 \RequirePackage{titlesec}
+\RequirePackage{mdframed}
+
+\definecolor{responseCommentBg}{gray}{0.96}
+\definecolor{responseCommentLine}{gray}{0.55}
 
 % ============================================================
 % Optional bibliography / hyperlink support
@@ -169,7 +173,8 @@
 }
 
 \newenvironment{reply}{%
-  \par\noindent{\normalfont\bfseries Reply:}~\normalfont
+  \par\vspace{0.15\baselineskip}%
+  \noindent{\normalfont\bfseries Response:}~\normalfont
 }{%
   \par
 }
@@ -196,12 +201,33 @@
 
 \newenvironment{qa}[1][]{%
   \responsesetupqa[#1]%
-  \par
+  \par\vspace{0.75\baselineskip}%
   \stepcounter{qacounter}%
+  \begin{mdframed}[
+    backgroundcolor=responseCommentBg,
+    linecolor=responseCommentLine,
+    linewidth=1.6pt,
+    topline=false,
+    rightline=false,
+    bottomline=false,
+    leftline=true,
+    leftmargin=0pt,
+    rightmargin=0pt,
+    innerleftmargin=0.8em,
+    innerrightmargin=0.8em,
+    innertopmargin=0.45\baselineskip,
+    innerbottommargin=0.45\baselineskip,
+    skipabove=0pt,
+    skipbelow=0.25\baselineskip
+  ]%
   \noindent
+  \normalfont
+  \ifthenelse{\equal{\response@showq}{true}}{%
+    \textbf{Q\theqacounter:}~%
+  }{}%
   \itshape
-  \ifthenelse{\equal{\response@showq}{true}}{Q\theqacounter:~}{}%
 }{%
+  \end{mdframed}%
   \par\normalfont
 }
 

@@ -388,7 +388,38 @@
   \setcounter{page}{1}%
 }
 
-\makeatother
+% =========================
+% Card System (SAFE VERSION)
+% =========================
+\RequirePackage[most]{tcolorbox}
 
+% =========================
+% Card System
+% =========================
+\RequirePackage[most]{tcolorbox}
+
+\newtcolorbox{card}[2][]{%
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=black!70,
+  boxrule=0.6pt,
+  arc=0.7mm,
+  left=2mm,
+  right=2mm,
+  top=1.5mm,
+  bottom=1.5mm,
+  % fonttitle=\bfseries\large,
+  fonttitle=\bfseries,
+  coltitle=black,
+  colbacktitle=white,
+  toptitle=1.3mm,
+  bottomtitle=-0.3mm,
+  titlerule=0.8pt,
+  title={#2},
+  #1%
+}
+
+\makeatother
 
 \endinput

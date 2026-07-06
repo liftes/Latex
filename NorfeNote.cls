@@ -224,34 +224,69 @@
 % ------------------------------------------------------------
 % 10. Side comments (margin notes)
 % ------------------------------------------------------------
-\newcounter{sidecommentcounter}
-\newcommand{\sidecomment}[1]{%
-  \stepcounter{sidecommentcounter}%
-  \textsuperscript{\Roman{sidecommentcounter}}%
-  \marginpar{\raggedright\footnotesize\textbf{\Roman{sidecommentcounter}:} #1}%
+
+% 改善 marginpar 的自动排布，尽量避免边注互相覆盖或溢出页面底部
+\RequirePackage{marginfix}
+\setlength{\marginparpush}{0.35\baselineskip}
+
+% 边注每个 section 重新编号
+% \newcounter{sidecommentcounter}[section]
+\newcounter{sidecommentcounter}[page]
+
+% 用于手动调整一段区域内所有边注的竖直偏移
+% 负值表示上移，正值表示下移
+\newlength{\NorfeSideCommentYOffset}
+\setlength{\NorfeSideCommentYOffset}{0pt}
+
+\newcommand{\setsidecommentyoffset}[1]{%
+  \setlength{\NorfeSideCommentYOffset}{#1}%
 }
+
+\newcommand{\resetsidecommentyoffset}{%
+  \setlength{\NorfeSideCommentYOffset}{0pt}%
+}
+
+\newcommand{\sidecomment}[1]{%
+  \refstepcounter{sidecommentcounter}%
+  \textsuperscript{\Roman{sidecommentcounter}}%
+  \marginpar{%
+    \vspace*{\NorfeSideCommentYOffset}%
+    \raggedright\footnotesize
+    \textbf{\Roman{sidecommentcounter}:} #1%
+  }%
+}
+
 \newcommand{\sidec}[1]{\sidecomment{#1}}
 
 % ------------------------------------------------------------
 % 11. Foot comments
 % ------------------------------------------------------------
-\newcounter{footcommentcounter}
-\renewcommand{\thefootnote}{\arabic{footcommentcounter}}
+
+% 脚注每个 section 重新编号
+\newcounter{footcommentcounter}[section]
+
+% 脚注标号形式：<1>, <2>, ...
+\renewcommand{\thefootnote}{<\arabic{footcommentcounter}>}
+
 \newcommand{\footcomment}[1]{%
-  \stepcounter{footcommentcounter}%
+  \refstepcounter{footcommentcounter}%
   \footnote{#1}%
 }
+
 \newcommand{\footc}[1]{\footcomment{#1}}
 \newcommand{\fc}[1]{\footcomment{#1}}
 
-% Patch footnote format (same as old)
+% Patch footnote format
 \makeatletter
-\patchcmd{\@makefntext}{\ifFN@hangfoot\else}{\ifFN@hangfoot\else\makebox[1em][l]{\textbf{\@thefnmark}:}\fi}{}{}
+\patchcmd{\@makefntext}
+  {\ifFN@hangfoot\else}
+  {\ifFN@hangfoot\else\makebox[2.3em][l]{\textbf{\@thefnmark}:}\fi}
+  {}
+  {}
 \makeatother
 
-\counterwithin*{sidecommentcounter}{page}
-\counterwithin*{footcommentcounter}{page}
-
+% \counterwithin*{sidecommentcounter}{page}
+% \counterwithin*{footcommentcounter}{page}
 
 % ------------------------------------------------------------
 % 12. Definition environment (same as old)

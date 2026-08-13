@@ -171,9 +171,13 @@
 
 % Vertical spacing between point-by-point response blocks.
 % These lengths may be adjusted in the main document with \setlength.
+\newlength{\responseReviewerBeforeSkip}
+\newlength{\responseReviewerRuleBeforeSkip}
 \newlength{\responseQBeforeSkip}
 \newlength{\responseReplyBeforeSkip}
 \newlength{\responseReplyAfterSkip}
+\setlength{\responseReviewerBeforeSkip}{1.25\baselineskip}
+\setlength{\responseReviewerRuleBeforeSkip}{-2.13ex}
 \setlength{\responseQBeforeSkip}{0.85\baselineskip}
 \setlength{\responseReplyBeforeSkip}{0.15\baselineskip}
 \setlength{\responseReplyAfterSkip}{0.40\baselineskip}
@@ -190,11 +194,11 @@
   \stepcounter{reviewercounter}%
   \response@ingroupfalse
   \def\response@grouptitle{}%
-  \pdfbookmark[0]{Reviewer \thereviewercounter}{reviewer.\thereviewercounter}%
-  \par\vspace{1ex}%
+  \pdfbookmark[0]{Response to Reviewer \thereviewercounter}{reviewer.\thereviewercounter}%
+  \par\vspace{\responseReviewerBeforeSkip}%
   \noindent
-  {\large\bfseries Reviewer \thereviewercounter\ (Reviewer Comments to Author)\par}%
-  \vspace{-1ex}%
+  {\large\bfseries Response to Reviewer \thereviewercounter\par}%
+  \vspace{\responseReviewerRuleBeforeSkip}%
   \noindent\rule{\textwidth}{1pt}\par
 }{%
   \response@ingroupfalse

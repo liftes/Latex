@@ -27,6 +27,10 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage{lmodern}
 
+% Conservative microtypography for optical margin alignment.
+% Font expansion is disabled to preserve the original font shapes.
+\RequirePackage[protrusion=true,expansion=false]{microtype}
+
 % -------------------------------------------------
 % Internal storage (with safe defaults)
 % -------------------------------------------------

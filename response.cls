@@ -85,6 +85,11 @@
 % Times-like math font
 \RequirePackage{newtxmath}
 
+% Conservative microtypography for optical margin alignment.
+% This also benefits Latin text in Chinese documents; CJK spacing remains
+% controlled by xeCJK. Font expansion is disabled.
+\RequirePackage[protrusion=true,expansion=false]{microtype}
+
 \renewcommand{\sfdefault}{phv}
 \renewcommand{\ttdefault}{pcr}
 

@@ -129,6 +129,11 @@
 \newcommand{\song}[1]{{\CJKfamily{song}#1}}
 \newcommand{\boldsong}[1]{{\CJKfamily{boldsong}#1}}
 
+% Conservative microtypography for optical margin alignment.
+% This also benefits Latin text in Chinese documents; CJK spacing remains
+% controlled by xeCJK. Font expansion is disabled.
+\RequirePackage[protrusion=true,expansion=false]{microtype}
+
 % ------------------------------------------------------------
 % 4. Basic typography
 % ------------------------------------------------------------

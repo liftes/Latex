@@ -97,6 +97,11 @@
   ]
 \fi
 
+% Conservative microtypography for optical margin alignment.
+% This also benefits Latin text in Chinese documents; CJK spacing remains
+% controlled by xeCJK. Font expansion is disabled.
+\RequirePackage[protrusion=true,expansion=false]{microtype}
+
 % ------------------------------------------------------------
 % 6. Core math & graphics packages
 % ------------------------------------------------------------

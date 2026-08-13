@@ -54,6 +54,7 @@
 \RequirePackage{fancyhdr}
 \RequirePackage{titlesec}
 \RequirePackage{mdframed}
+\RequirePackage{hyperref}
 
 \definecolor{responseCommentBg}{gray}{0.96}
 \definecolor{responseCommentLine}{gray}{0.55}
@@ -62,15 +63,17 @@
 % Optional bibliography / hyperlink support
 % ============================================================
 \ifresponse@withbib
-  \RequirePackage{hyperref}
   \RequirePackage{cite}
-  \hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    citecolor=black,
-    urlcolor=black
-  }
 \fi
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black,
+  bookmarksopen=true,
+  bookmarksnumbered=false
+}
 
 % ============================================================
 % Font settings
@@ -155,28 +158,93 @@
 % ============================================================
 \newcounter{reviewercounter}
 \newcounter{qacounter}
+\newcounter{qabookmarkcounter}
+% Global counter used only to keep PDF destinations unique.
+\newcounter{reviewergroupcounter}
+% Per-reviewer counter used for the visible A, B, C outline labels.
+\newcounter{reviewergrouplabelcounter}
+
+\newif\ifresponse@ingroup
+\response@ingroupfalse
+
+\def\response@grouptitle{}
+
+% Vertical spacing between point-by-point response blocks.
+% These lengths may be adjusted in the main document with \setlength.
+\newlength{\responseQBeforeSkip}
+\newlength{\responseReplyBeforeSkip}
+\newlength{\responseReplyAfterSkip}
+\setlength{\responseQBeforeSkip}{0.85\baselineskip}
+\setlength{\responseReplyBeforeSkip}{0.15\baselineskip}
+\setlength{\responseReplyAfterSkip}{0.40\baselineskip}
 
 \setcounter{reviewercounter}{0}
 \setcounter{qacounter}{0}
+\setcounter{qabookmarkcounter}{0}
+\setcounter{reviewergroupcounter}{0}
+\setcounter{reviewergrouplabelcounter}{0}
 
 \newenvironment{reviewersection}{%
   \setcounter{qacounter}{0}%
+  \setcounter{reviewergrouplabelcounter}{0}%
   \stepcounter{reviewercounter}%
+  \response@ingroupfalse
+  \def\response@grouptitle{}%
+  \pdfbookmark[0]{Reviewer \thereviewercounter}{reviewer.\thereviewercounter}%
   \par\vspace{1ex}%
   \noindent
   {\large\bfseries Reviewer \thereviewercounter\ (Reviewer Comments to Author)\par}%
   \vspace{-1ex}%
   \noindent\rule{\textwidth}{1pt}\par
-  \itshape
 }{%
+  \response@ingroupfalse
+  \def\response@grouptitle{}%
   \par\normalfont
 }
 
-\newenvironment{reply}{%
-  \par\vspace{0.15\baselineskip}%
-  \noindent{\normalfont\bfseries Response:}~\normalfont
+% ============================================================
+% Reviewer comment group
+% Usage:
+%   \begin{reviewergroup}{Major Comments}
+%     ...
+%   \end{reviewergroup}
+%
+% Optional short title for the PDF outline:
+%   \begin{reviewergroup}[General Comments]
+%     {There are some points that the authors might want to consider:}
+%     ...
+%   \end{reviewergroup}
+%
+% Each group resets the visible Q numbering. Outside this environment,
+% qa remains valid and is placed directly below the current reviewer.
+% Group letters (A, B, C, ...) appear only in the PDF outline and
+% restart for each reviewer; the printed group heading stays unnumbered.
+% ============================================================
+\newenvironment{reviewergroup}[2][]{%
+  \par
+  \setcounter{qacounter}{0}%
+  \stepcounter{reviewergroupcounter}%
+  \stepcounter{reviewergrouplabelcounter}%
+  \response@ingrouptrue
+  \def\response@grouptitle{#2}%
+  \def\response@outlinegrouptitle{#1}%
+  \if\relax\detokenize{#1}\relax
+    \def\response@outlinegrouptitle{#2}%
+  \fi
+  \subsection*{#2}%
+  \pdfbookmark[1]{\Alph{reviewergrouplabelcounter}. \response@outlinegrouptitle}%
+    {reviewergroup.\thereviewergroupcounter}%
 }{%
   \par
+  \response@ingroupfalse
+  \def\response@grouptitle{}%
+}
+
+\newenvironment{reply}{%
+  \par\vspace{\responseReplyBeforeSkip}%
+  \noindent{\normalfont\bfseries Response:}~\normalfont
+}{%
+  \par\vspace{\responseReplyAfterSkip}%
 }
 
 % ============================================================
@@ -201,8 +269,14 @@
 
 \newenvironment{qa}[1][]{%
   \responsesetupqa[#1]%
-  \par\vspace{0.75\baselineskip}%
+  \par\vspace{\responseQBeforeSkip}%
   \stepcounter{qacounter}%
+  \stepcounter{qabookmarkcounter}%
+  \ifresponse@ingroup
+    \pdfbookmark[2]{Q\theqacounter}{question.\theqabookmarkcounter}%
+  \else
+    \pdfbookmark[1]{Q\theqacounter}{question.\theqabookmarkcounter}%
+  \fi
   \begin{mdframed}[
     backgroundcolor=responseCommentBg,
     linecolor=responseCommentLine,
@@ -225,7 +299,35 @@
   \ifthenelse{\equal{\response@showq}{true}}{%
     \textbf{Q\theqacounter:}~%
   }{}%
-  \itshape
+}{%
+  \end{mdframed}%
+  \par\normalfont
+}
+
+% ============================================================
+% Unnumbered reviewer comment environment
+% Usage: opening comments, summaries, or other unnumbered text.
+% ============================================================
+\newenvironment{reviewercomment}{%
+  \par\vspace{0.75\baselineskip}%
+  \begin{mdframed}[
+    backgroundcolor=responseCommentBg,
+    linecolor=responseCommentLine,
+    linewidth=1.6pt,
+    topline=false,
+    rightline=false,
+    bottomline=false,
+    leftline=true,
+    leftmargin=0pt,
+    rightmargin=0pt,
+    innerleftmargin=0.8em,
+    innerrightmargin=0.8em,
+    innertopmargin=0.45\baselineskip,
+    innerbottommargin=0.45\baselineskip,
+    skipabove=0pt,
+    skipbelow=0.25\baselineskip
+  ]%
+  \noindent\normalfont
 }{%
   \end{mdframed}%
   \par\normalfont

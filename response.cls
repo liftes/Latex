@@ -42,7 +42,6 @@
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amssymb}
-\RequirePackage{bm}
 \RequirePackage{graphicx}
 \RequirePackage{mathrsfs}
 \RequirePackage{tikz}
@@ -82,12 +81,14 @@
 \RequirePackage{fontspec}
 \setmainfont{Times New Roman}
 
-% Times-like math font
-\RequirePackage{newtxmath}
+% Times-like math font.
+% noOT1 avoids the OT1/TimesNewRoman font-family conflict under XeLaTeX.
+\RequirePackage[noOT1]{newtxmath}
+
+% Bold mathematics should be loaded after the math font package.
+\RequirePackage{bm}
 
 % Conservative microtypography for optical margin alignment.
-% This also benefits Latin text in Chinese documents; CJK spacing remains
-% controlled by xeCJK. Font expansion is disabled.
 \RequirePackage[protrusion=true,expansion=false]{microtype}
 
 \renewcommand{\sfdefault}{phv}

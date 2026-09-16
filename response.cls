@@ -78,15 +78,23 @@
 % Font settings
 % ============================================================
 % Recommended compiler: XeLaTeX.
+
+% fontspec has normally already been loaded by ctexart/xeCJK,
+% but keeping this line is harmless.
 \RequirePackage{fontspec}
-\setmainfont{Times New Roman}
 
-% Times-like math font.
-% noOT1 avoids the OT1/TimesNewRoman font-family conflict under XeLaTeX.
-\RequirePackage[noOT1]{newtxmath}
+% Give newtxmath a genuine OT1 Times-like family for math operators.
+% This must be done BEFORE \setmainfont{Times New Roman}.
+\renewcommand*{\rmdefault}{ntxtlf}
 
-% Bold mathematics should be loaded after the math font package.
+% Times-like mathematical fonts.
+\RequirePackage{newtxmath}
+
+% Load bm only after the final mathematical font package.
 \RequirePackage{bm}
+
+% Actual Times New Roman for normal text.
+\setmainfont{Times New Roman}
 
 % Conservative microtypography for optical margin alignment.
 \RequirePackage[protrusion=true,expansion=false]{microtype}

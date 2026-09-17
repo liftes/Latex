@@ -54,6 +54,61 @@
 \RequirePackage{titlesec}
 \RequirePackage{mdframed}
 \RequirePackage{hyperref}
+\RequirePackage{multicol}
+
+% Explicit class-language titles, independent of ctexart's default names.
+\ifresponse@chinese
+  \newcommand{\responsecontentsname}{审稿意见回复总览}
+  \newcommand{\responsereferencesname}{参考文献}
+\else
+  \newcommand{\responsecontentsname}{Overview of Responses}
+  \newcommand{\responsereferencesname}{References}
+\fi
+
+% Printed navigation reuses existing PDF destinations and writes no bookmarks.
+% A separate auxiliary file avoids reusing legacy .toc entries.
+\newcommand{\response@writecontents}[3]{%
+  \addtocontents{rtc}{\protect\responsecontentsentry{#1}{#2}{\thepage}{#3}}%
+}
+\newcommand{\responsecontentsentry}[4]{%
+  \par
+  \ifcase#1\relax
+    \addvspace{0.65\baselineskip}\penalty-100
+  \or
+    \addvspace{0.35\baselineskip}\penalty-50
+  \fi
+  \begingroup
+    \parindent=0pt
+    \leftskip=#1em\relax
+    \rightskip=2.5em
+    \parfillskip=-\rightskip
+    \ifnum#1<2 \bfseries\fi
+    \noindent\hyperlink{#4}{#2}\nobreak\hskip0.5em
+    \leaders\hbox to 0.5em{\hss\normalfont.\hss}\hfill
+    \nobreak\hbox to 2.5em{\hfil\hyperlink{#4}{#3}}\par
+  \endgroup
+  \ifnum#1<2 \nobreak\fi
+}
+% Contents uses the body font size, with local columns and single spacing.
+\newcommand{\responsecontents}[1][2]{%
+  \par\begingroup
+    % \normalsize\singlespacing
+    \small\setstretch{1.13}
+    \setlength{\columnsep}{1.5em}%
+    \setlength{\parskip}{0pt}%
+    \begin{multicols}{#1}[\section*{\large\responsecontentsname}]
+      \raggedcolumns
+      \@starttoc{rtc}%
+    \end{multicols}
+  \endgroup\par
+}
+
+% Keep the printed reference heading's existing style; navigation is top-level.
+\newcommand{\responsereferencesheading}{%
+  \subsection*{\responsereferencesname}%
+  \pdfbookmark[0]{\responsereferencesname}{response.references}%
+  \response@writecontents{0}{\responsereferencesname}{response.references.0}%
+}
 
 \definecolor{responseCommentBg}{gray}{0.96}
 \definecolor{responseCommentLine}{gray}{0.55}
@@ -209,6 +264,7 @@
   \response@ingroupfalse
   \def\response@grouptitle{}%
   \pdfbookmark[0]{Response to Reviewer \thereviewercounter}{reviewer.\thereviewercounter}%
+  \response@writecontents{0}{Response to Reviewer \thereviewercounter}{reviewer.\thereviewercounter.0}%
   \par\vspace{\responseReviewerBeforeSkip}%
   \noindent
   {\large\bfseries Response to Reviewer \thereviewercounter\par}%
@@ -252,6 +308,8 @@
   \subsection*{#2}%
   \pdfbookmark[1]{\Alph{reviewergrouplabelcounter}. \response@outlinegrouptitle}%
     {reviewergroup.\thereviewergroupcounter}%
+  \response@writecontents{1}{\Alph{reviewergrouplabelcounter}. \response@outlinegrouptitle}%
+    {reviewergroup.\thereviewergroupcounter.1}%
 }{%
   \par
   \response@ingroupfalse
@@ -292,8 +350,10 @@
   \stepcounter{qabookmarkcounter}%
   \ifresponse@ingroup
     \pdfbookmark[2]{Q\theqacounter}{question.\theqabookmarkcounter}%
+    \response@writecontents{2}{Q\theqacounter}{question.\theqabookmarkcounter.2}%
   \else
     \pdfbookmark[1]{Q\theqacounter}{question.\theqabookmarkcounter}%
+    \response@writecontents{1}{Q\theqacounter}{question.\theqabookmarkcounter.1}%
   \fi
   \begin{mdframed}[
     backgroundcolor=responseCommentBg,

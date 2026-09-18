@@ -149,10 +149,13 @@
 \RequirePackage{bm}
 
 % Actual Times New Roman for normal text.
-\setmainfont{Times New Roman}
+% Preserve nominal word space; moderately reduce stretch and especially shrink.
+% WordSpace factors: nominal spacing, stretch component, shrink component.
+\setmainfont[WordSpace={1.0,0.85,0.5}]{Times New Roman}
 
 % Conservative microtypography for optical margin alignment.
 \RequirePackage[protrusion=true,expansion=false]{microtype}
+
 
 \renewcommand{\sfdefault}{phv}
 \renewcommand{\ttdefault}{pcr}
@@ -369,6 +372,8 @@
     innerrightmargin=0.8em,
     innertopmargin=0.45\baselineskip,
     innerbottommargin=0.45\baselineskip,
+    % Continuation pages: first-line allowance plus visible top padding.
+    splittopskip=\dimexpr\topskip+0.45\baselineskip\relax,
     skipabove=0pt,
     skipbelow=0.25\baselineskip
   ]%

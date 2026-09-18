@@ -92,6 +92,8 @@
 % Contents uses the body font size, with local columns and single spacing.
 \newcommand{\responsecontents}[1][2]{%
   \par\begingroup
+    \pagestyle{responseNoHeader}%
+    \thispagestyle{responseNoHeader}%
     % \normalsize\singlespacing
     \small\setstretch{1.13}
     \setlength{\columnsep}{1.5em}%
@@ -105,6 +107,8 @@
 
 % Keep the printed reference heading's existing style; navigation is top-level.
 \newcommand{\responsereferencesheading}{%
+  \def\response@headerreviewer{\responsereferencesname}%
+  \def\response@headergroup{}%
   \subsection*{\responsereferencesname}%
   \pdfbookmark[0]{\responsereferencesname}{response.references}%
   \response@writecontents{0}{\responsereferencesname}{response.references.0}%
@@ -164,6 +168,7 @@
 % Title
 % ============================================================
 \renewcommand{\maketitle}{%
+  \thispagestyle{responseNoHeader}%
   \begin{center}%
     {\LARGE \@title \par}%
   \end{center}%
@@ -217,13 +222,54 @@
 % ============================================================
 % Page style
 % ============================================================
+% Dedicated marks keep navigation independent of section/bibliography marks.
+% Header translations only; printed headings and contents remain unchanged.
+\newcommand{\response@reviewername}[1]{%
+  \ifresponse@chinese 对审稿人~#1~的回复\else Response to Reviewer #1\fi}
+\@namedef{response@groupzh@Major Comments}{主要意见}
+\@namedef{response@groupzh@More Specific Comments}{具体意见}
+\@namedef{response@groupzh@Overall Assessment}{总体评价}
+\@namedef{response@groupzh@General Comments}{总体意见}
+\@namedef{response@groupzh@Minor Comments}{次要意见}
+\newcommand{\response@headergrouptitle}[1]{%
+  \ifresponse@chinese
+    \ifcsname response@groupzh@#1\endcsname
+      \csname response@groupzh@#1\endcsname
+    \else #1\fi
+  \else #1\fi}
+% Reserve header height without moving the text area or changing its height.
+\ifdim\headheight<16pt
+  \addtolength{\headsep}{\dimexpr\headheight-16pt\relax}
+  \setlength{\headheight}{16pt}
+\fi
+\NewMarkClass{responseReviewer}
+\NewMarkClass{responseGroup}
+\def\response@headerreviewer{}
+\def\response@headergroup{}
+% Mark each paragraph so a later group on the same page does not overwrite
+% the navigation for the opening paragraph. Environment grouping is retained.
+\AddToHook{para/begin}{%
+  \InsertMark{responseReviewer}{\response@headerreviewer}%
+  \InsertMark{responseGroup}{\response@headergroup}%
+}
 \fancypagestyle{plain}{%
   \fancyhf{}%
+  \fancyhead[L]{\normalfont\setstretch{1}\small
+    \FirstMark{responseReviewer}}%
+  \fancyhead[R]{\normalfont\setstretch{1}\small
+    \FirstMark{responseGroup}}%
   \fancyfoot[C]{\thepage}%
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0pt}%
 }
 \pagestyle{plain}
+% Cover, contents, and reviewer-opening pages retain only the page number.
+\fancypagestyle{responseNoHeader}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
 
 % ============================================================
 % Reviewer / QA / Reply environments
@@ -264,6 +310,8 @@
   \setcounter{qacounter}{0}%
   \setcounter{reviewergrouplabelcounter}{0}%
   \stepcounter{reviewercounter}%
+  \edef\response@headerreviewer{\response@reviewername{\thereviewercounter}}%
+  \def\response@headergroup{}%
   \response@ingroupfalse
   \def\response@grouptitle{}%
   \pdfbookmark[0]{Response to Reviewer \thereviewercounter}{reviewer.\thereviewercounter}%
@@ -271,6 +319,7 @@
   \par\vspace{\responseReviewerBeforeSkip}%
   \noindent
   {\large\bfseries Response to Reviewer \thereviewercounter\par}%
+  \thispagestyle{responseNoHeader}%
   \vspace{\responseReviewerRuleBeforeSkip}%
   \noindent\rule{\textwidth}{1pt}\par
 }{%
@@ -308,6 +357,8 @@
   \if\relax\detokenize{#1}\relax
     \def\response@outlinegrouptitle{#2}%
   \fi
+  \protected@edef\response@headergroup{%
+    \Alph{reviewergrouplabelcounter}. \response@headergrouptitle{\response@outlinegrouptitle}}%
   \subsection*{#2}%
   \pdfbookmark[1]{\Alph{reviewergrouplabelcounter}. \response@outlinegrouptitle}%
     {reviewergroup.\thereviewergroupcounter}%

@@ -24,7 +24,7 @@
 % ============================================================
 % Base class
 % ============================================================
-\LoadClass[zihao=-4,a4paper,UTF8]{ctexart}
+\LoadClass[zihao=-4,letterpaper,UTF8]{ctexart}
 
 % ============================================================
 % Page layout and spacing
@@ -89,7 +89,8 @@
   \endgroup
   \ifnum#1<2 \nobreak\fi
 }
-% Contents uses the body font size, with local columns and single spacing.
+% Contents keeps its local font and spacing in either layout.
+% [1] uses a single column; [2] (default) and higher use multicols.
 \newcommand{\responsecontents}[1][2]{%
   \par\begingroup
     \pagestyle{responseNoHeader}%
@@ -98,10 +99,15 @@
     \small\setstretch{1.13}
     \setlength{\columnsep}{1.5em}%
     \setlength{\parskip}{0pt}%
-    \begin{multicols}{#1}[\section*{\large\responsecontentsname}]
-      \raggedcolumns
+    \ifnum#1=1\relax
+      \section*{\large\responsecontentsname}
       \@starttoc{rtc}%
-    \end{multicols}
+    \else
+      \begin{multicols}{#1}[\section*{\large\responsecontentsname}]
+        \raggedcolumns
+        \@starttoc{rtc}%
+      \end{multicols}
+    \fi
   \endgroup\par
 }
 

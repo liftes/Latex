@@ -152,11 +152,17 @@
 % This must be done BEFORE \setmainfont{Times New Roman}.
 \renewcommand*{\rmdefault}{ntxtlf}
 
+
 % Times-like mathematical fonts.
 \RequirePackage{newtxmath}
 
-% Load bm only after the final mathematical font package.
+% Restore Computer Modern calligraphic letters for \mathcal.
+% Keep the remaining mathematical fonts provided by newtxmath.
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+
+% Load bm only after the final mathematical font settings.
 \RequirePackage{bm}
+
 
 % Actual Times New Roman for normal text.
 % Preserve nominal word space; moderately reduce stretch and especially shrink.

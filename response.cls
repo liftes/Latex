@@ -408,13 +408,6 @@
   \par\vspace{\responseQBeforeSkip}%
   \stepcounter{qacounter}%
   \stepcounter{qabookmarkcounter}%
-  \ifresponse@ingroup
-    \pdfbookmark[2]{Q\theqacounter}{question.\theqabookmarkcounter}%
-    \response@writecontents{2}{Q\theqacounter}{question.\theqabookmarkcounter.2}%
-  \else
-    \pdfbookmark[1]{Q\theqacounter}{question.\theqabookmarkcounter}%
-    \response@writecontents{1}{Q\theqacounter}{question.\theqabookmarkcounter.1}%
-  \fi
   \begin{mdframed}[
     backgroundcolor=responseCommentBg,
     linecolor=responseCommentLine,
@@ -436,6 +429,15 @@
   ]%
   \noindent
   \normalfont
+  % Keep navigation in the first framed paragraph, so anchors and
+  % contents entries move with the question when the frame breaks.
+  \ifresponse@ingroup
+    \pdfbookmark[2]{Q\theqacounter}{question.\theqabookmarkcounter}%
+    \response@writecontents{2}{Q\theqacounter}{question.\theqabookmarkcounter.2}%
+  \else
+    \pdfbookmark[1]{Q\theqacounter}{question.\theqabookmarkcounter}%
+    \response@writecontents{1}{Q\theqacounter}{question.\theqabookmarkcounter.1}%
+  \fi
   \ifthenelse{\equal{\response@showq}{true}}{%
     \textbf{Q\theqacounter:}~%
   }{}%
